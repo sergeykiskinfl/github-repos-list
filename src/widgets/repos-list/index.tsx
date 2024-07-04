@@ -19,10 +19,17 @@ export default function RepoList(): JSX.Element {
           } = edge;
 
           return (
-            <li key={id}>
-              <Link to={id}>
-                {name} - {stargazerCount} - {updatedAt} - {url}
-              </Link>
+            <li
+              key={id}
+              style={{ display: "flex", flexDirection: "row", gap: "5px" }}
+            >
+              <Link to={id}>{name}</Link>
+              <span>-</span>
+              {stargazerCount}
+              <span>-</span>
+              {updatedAt.split("T")[0]}
+              <span>-</span>
+              <a href={url}>{url}</a>
             </li>
           );
         })}

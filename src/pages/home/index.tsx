@@ -8,6 +8,7 @@ import RepoList from "../../widgets/repos-list";
 import SearchInput from "../../widgets/search-input";
 
 export default function HomePage(): JSX.Element {
+  // Главная страница - список репозиториев
   let repoListContent: JSX.Element = <p>Loading...</p>;
 
   const [setCurrentPage, query, setBtnCount, setRepos] = useStore((state) => [
@@ -81,7 +82,15 @@ export default function HomePage(): JSX.Element {
     repoListContent = <p>Error : {getOwnReposError.message}</p>;
 
   if (getReposByNameData || getOwnReposData) {
-    repoListContent = <RepoList />;
+    repoListContent = (
+      <>
+        <h2 style={{ fontSize: "medium", marginLeft: "40px" }}>
+          Название репозитория - кол-во звезд на github - дата последнего
+          коммита - ссылка на Github
+        </h2>
+        <RepoList />
+      </>
+    );
   }
 
   return (

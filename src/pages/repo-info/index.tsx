@@ -5,6 +5,7 @@ import { RepositoryEdge } from "../../shared/model/interfaces";
 import "./ui/index.css";
 
 export default function RepoInfo(): JSX.Element {
+  // Страница с подробной информацией о репозитории
   const { pathname } = useLocation();
 
   const repoId = pathname.split("/")[1];
@@ -40,7 +41,8 @@ export default function RepoInfo(): JSX.Element {
     <section key={id} className="repo__container">
       <h1 className="repo__header">Подробные сведения о репозитории</h1>
       <div>
-        {name} - {stargazerCount} - {updatedAt}
+        <h2 style={{ fontSize: "medium" }}>Название репозитория - кол-во звезд на github - дата последнего коммита</h2>
+        {name} - {stargazerCount} - {updatedAt.split("T")[0]}
       </div>
       <div>
         <h2 style={{ fontSize: "medium" }}>Владелец</h2>

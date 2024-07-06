@@ -13,7 +13,7 @@ export default function RepoList(): JSX.Element {
     <ul>
       {repos
         .slice(currentPage * 10, (currentPage + 1) * 10)
-        .map((edge: RepositoryEdge) => {
+        .map((edge: RepositoryEdge, index) => {
           const {
             node: { id, name, stargazerCount, updatedAt, url },
           } = edge;
@@ -23,7 +23,9 @@ export default function RepoList(): JSX.Element {
               key={id}
               style={{ display: "flex", flexDirection: "row", gap: "5px" }}
             >
-              <Link to={id}>{name}</Link>
+              <Link to={id} data-cy={`link-to-description-${index}`}>
+                {name}
+              </Link>
               <span>-</span>
               {stargazerCount}
               <span>-</span>

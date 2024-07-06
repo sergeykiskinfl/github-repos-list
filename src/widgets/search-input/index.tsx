@@ -18,6 +18,7 @@ export default function SearchInput(): JSX.Element {
         defaultValue={query}
         style={{ maxWidth: "900px" }}
         onChange={(e) => debouncedSetQuery(e.target.value)}
+        data-cy="search-input"
       />
     </section>
   );

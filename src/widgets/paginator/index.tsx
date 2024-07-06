@@ -24,6 +24,7 @@ export default function Paginator(): JSX.Element {
               backgroundColor: index === currentPage ? "white" : "black",
               color: index === currentPage ? "black" : "white",
             }}
+            data-cy={`pagination-btn-${index + 1}`}
           >
             {index + 1}
           </button>

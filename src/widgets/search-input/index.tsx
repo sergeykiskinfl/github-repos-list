@@ -1,9 +1,12 @@
 import useStore from "../../shared/model/store";
+import { debounce } from "./model/utils";
 import "./ui/index.css";
 
 // Инпут для ввода запроса
 export default function SearchInput(): JSX.Element {
   const [query, setQuery] = useStore((state) => [state.query, state.setQuery]);
+
+  const debouncedSetQuery = debounce(setQuery, 200);
 
   return (
     <section className="search__container">
@@ -14,7 +17,7 @@ export default function SearchInput(): JSX.Element {
         name="search"
         defaultValue={query}
         style={{ maxWidth: "900px" }}
-        onChange={(e) => setQuery(e.target.value)}
+        onChange={(e) => debouncedSetQuery(e.target.value)}
       />
     </section>
   );

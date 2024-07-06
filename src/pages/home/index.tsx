@@ -1,76 +1,45 @@
-import { useEffect, useDeferredValue } from "react";
-import { useLazyQuery } from "@apollo/client";
+import { useEffect } from "react";
 import useStore from "../../shared/model/store";
-import { GET_OWN_REPOSITORIES, GET_REPOSITORIES_BY_NAME } from "./api/queries";
 
 import Paginator from "../../widgets/paginator";
 import RepoList from "../../widgets/repos-list";
 import SearchInput from "../../widgets/search-input";
+import useGetRepos from "./api/custom-queries-hooks";
 
 export default function HomePage(): JSX.Element {
   // Главная страница - список репозиториев
   let repoListContent: JSX.Element = <p>Loading...</p>;
 
-  const [setCurrentPage, query, setBtnCount, setRepos] = useStore((state) => [
+  const [setCurrentPage, query] = useStore((state) => [
     state.setCurrentPage,
     state.query,
     state.setBtnCount,
     state.setRepos,
   ]);
 
-  const deferredQuery = useDeferredValue(query);
-
-  const [
+  const {
     getReposByName,
-    {
-      loading: getReposByNameLoading,
-      error: getReposByNameError,
-      data: getReposByNameData,
-    },
-  ] = useLazyQuery(GET_REPOSITORIES_BY_NAME, {
-    onCompleted(data) {
-      const {
-        search: { edges },
-      } = data;
-
-      setBtnCount(Math.ceil(edges.length / 10));
-      setRepos(edges);
-    },
-  });
-
-  const [
+    getReposByNameLoading,
+    getReposByNameError,
+    getReposByNameData,
     getOwnRepos,
-    {
-      loading: getOwnReposLoading,
-      error: getOwnReposError,
-      data: getOwnReposData,
-    },
-  ] = useLazyQuery(GET_OWN_REPOSITORIES, {
-    onCompleted(data) {
-      const {
-        viewer: {
-          repositories: { edges },
-        },
-      } = data;
-
-      setBtnCount(Math.ceil(edges.length / 10));
-
-      setRepos(edges);
-    },
-  });
+    getOwnReposLoading,
+    getOwnReposError,
+    getOwnReposData,
+  } = useGetRepos();
 
   useEffect(() => {
-    if (deferredQuery.length > 1) {
+    if (query.length > 1) {
       getReposByName({
         variables: {
-          queryString: `name:${deferredQuery}`,
+          queryString: `name:${query}`,
         },
       });
     } else {
       setCurrentPage(0);
       getOwnRepos();
     }
-  }, [deferredQuery, getReposByName, getOwnRepos, setCurrentPage]);
+  }, [query, getReposByName, getOwnRepos, setCurrentPage]);
 
   if (getReposByNameLoading || getOwnReposLoading) {
     repoListContent = <p>Loading...</p>;
